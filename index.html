@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>価格変更CSV出力アプリ</title>
+    <style>
+        .input-row{
+            display: flex;
+            width: 1200px;
+            max-width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .form_box label{
+            width: calc(25% - 10px);
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>価格変更CSV出力アプリ</h1>
+    
+    <form id="priceForm">
+        <div class="input-row">
+            <div class="form_box">
+                <p>商品SKU</p>
+                <label for="sku"></label>
+                <input type="text" class="sku" placeholder="（例）F994886969017" required><br>
+            </div>
+
+            <div class="form_box">
+                <p>原価単価</p>
+                <label for="cost"></label>
+                <input type="number" class="cost" required><br>
+            </div>
+
+            <div class="form_box">
+                <p>販売単価</p>
+                <label for="sellingPrice"></label>
+                <input type="number" class="sellingPrice" required><br>
+            </div>
+
+            <div class="form_box">
+                <p>適応開始日</p>
+                <label for="startDate"></label>
+                <input type="date" class="startDate" required><br>
+            </div>
+        </div>
+
+        <button type="button" onclick="addRow()">行を追加</button>
+        <button type="button" onclick="generateCSV()">CSVを生成</button>
+    </form>
+
+    <script>
+        function addRow() {
+            // Create a new div element
+            var newRow = document.createElement("div");
+            newRow.classList.add("input-row");
+
+            // Set the HTML content of the new row with input fields
+            newRow.innerHTML = `
+                <div class="form_box">
+                    <label for="sku"></label>
+                    <input type="text" class="sku" required><br>
+                </div>
+                
+                <div class="form_box">   
+                    <label for="cost"></label>
+                    <input type="number" class="cost" required><br>
+                </div>
+
+                <div class="form_box">    
+                    <label for="sellingPrice"></label>
+                    <input type="number" class="sellingPrice" required><br>
+                </div>
+
+                <div class="form_box">    
+                    <label for="startDate"></label>
+                    <input type="date" class="startDate" required><br>
+                </div>
+            `;
+
+            // Insert the new row after the last input-row
+            var lastInputRow = document.querySelector("#priceForm .input-row:last-child");
+            if (lastInputRow) {
+                lastInputRow.parentNode.insertBefore(newRow, lastInputRow.nextSibling);
+            } else {
+                // If there is no last input-row, insert it before the buttons
+                document.getElementById("priceForm").insertBefore(newRow, document.getElementById("priceForm").lastElementChild.previousElementSibling);
+            }
+        }
+
+        function generateCSV() {
+            // Collect values from existing and dynamically created input fields
+            var rows = document.querySelectorAll("#priceForm .input-row");
+            var csvContent = "data:text/csv;charset=utf-8,商品,原価単価,税抜購買単価,税抜上代単価,税抜販売単価,適用開始日,商品名,税込購買単価,税込上代単価,税込販売単価\n";
+
+            rows.forEach(function (row) {
+                var sku = row.querySelector(".sku").value;
+                var cost = row.querySelector(".cost").value;
+                var sellingPrice = row.querySelector(".sellingPrice").value;
+                var startDate = row.querySelector(".startDate").value;
+            
+                // Format the date as a plain string without hyphens (remove the time portion)
+                var formattedDate = new Date(startDate);
+                formattedDate.setHours(0, 0, 0, 0);
+                var dateStringWithoutHyphens = formattedDate.toISOString().split("T")[0].replace(/-/g, '');
+            
+                // Append values to CSV content
+                csvContent += `${sku},${cost},${cost},${sellingPrice},${sellingPrice},${dateStringWithoutHyphens}\n`;
+            });
+        
+            // Create a data URI and trigger a download
+            var encodedUri = encodeURI(csvContent);
+            var link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "price_data.csv");
+            document.body.appendChild(link);
+            link.click();
+        }       
+
+
+    </script>
+</body>
+</html>
