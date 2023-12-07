@@ -5,6 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>価格変更CSV出力アプリ</title>
     <style>
+        *{
+            color: #333333;
+        }
+
+        body {
+            /* 「BIZ UDPゴシック」をWindowsで指定 */
+            font-family: "Helvetica Neue",
+            Arial,
+            "Hiragino Kaku Gothic ProN",
+            "Hiragino Sans",
+            "BIZ UDPGothic",
+            Meiryo,
+            sans-serif;
+            width: 1000px;
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .form_area{
+            width: 1000px;
+            max-width: 100%;
+            padding: 0 10px;
+            margin: 0 auto;
+        }
+        
         .input-row{
             display: flex;
             width: 1200px;
@@ -13,46 +39,141 @@
         }
 
         .form_box label{
-            width: calc(25% - 10px);
+            width: 25%;
+        }
+
+        .form_box p{
+            color: #333333;
+            text-align: center;
+            font-weight: 700;
+            margin-bottom: 0;
+            letter-spacing: 5px;
+        }
+
+        input{
+            width: 200px;
+            max-width: 100%;
+            padding: 5px;
             margin-right: 10px;
+            height: 20px;
+            font-size: 1rem;
+        }
+
+        #skuValidationError{
+            font-size: 0.7rem;
+            color: #ff6666;
+            display: float;
+        }
+
+        .main_btn{
+            border: none;
+            border-radius: none;
+            padding: 10px 40px;
+            margin-right: 10px;
+            transition: .4s;
+        }
+
+        .main_btn:hover{
+            cursor: pointer;
+        }
+
+        .main_btn:active{
+            position: relative;
+            top: 5px;
+        }
+
+        .add_row{
+            background: #666666;
+            color: #fff;
+        }
+
+        .add_row:hover{
+            background: #3c3c3c;
+        }
+
+        .gene_csv{
+            background: #00d026;
+            color: #fff;
+        }
+
+        .gene_csv:hover{
+            background: #019a1d;
+        }
+
+        .center{
+            text-align: center;
+        }
+
+        .delete-row-button {
+            background: #FF6666;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .delete-row-button:hover{
+            background: #ff4242;
+        }
+
+        .delete-row-button:active{
+            position: relative;
+            top: 5px;
         }
     </style>
 </head>
 <body>
-    <h1>価格変更CSV出力アプリ</h1>
-    
-    <form id="priceForm">
-        <div class="input-row">
-            <div class="form_box">
-                <p>商品SKU</p>
-                <label for="sku"></label>
-                <input type="text" class="sku" placeholder="（例）F994886969017" required><br>
-            </div>
+    <h1>商品単価マスタCSV出力</h1>
+    <p>原価変更・販売価格変更を行う場合に使用してください。<br>すべてのフォームに値を入れてください。</p>
 
-            <div class="form_box">
-                <p>原価単価</p>
-                <label for="cost"></label>
-                <input type="number" class="cost" required><br>
-            </div>
+        <form id="priceForm">
+            <div class="input-row">
+                <div class="form_box">
+                    <p>商品SKU</p>
+                    <label for="sku"></label>
+                    <input type="text" class="sku" placeholder="" required oninput="validateSku(this)"><br>
+                    <div id="skuValidationError"></div>
+                </div>
 
-            <div class="form_box">
-                <p>販売単価</p>
-                <label for="sellingPrice"></label>
-                <input type="number" class="sellingPrice" required><br>
-            </div>
+                <div class="form_box">
+                    <p>原価単価</p>
+                    <label for="cost"></label>
+                    <input type="number" class="cost" required><br>
+                </div>
 
-            <div class="form_box">
-                <p>適応開始日</p>
-                <label for="startDate"></label>
-                <input type="date" class="startDate" required><br>
-            </div>
-        </div>
+                <div class="form_box">
+                    <p>販売単価</p>
+                    <label for="sellingPrice"></label>
+                    <input type="number" class="sellingPrice" required><br>
+                </div>
 
-        <button type="button" onclick="addRow()">行を追加</button>
-        <button type="button" onclick="generateCSV()">CSVを生成</button>
-    </form>
+                <div class="form_box">
+                    <p>適応開始日</p>
+                    <label for="startDate"></label>
+                    <input type="date" class="startDate" required><br>
+                </div>
+            </div>
+                <button class="main_btn add_row" type="button" onclick="addRow()">行を追加</button>
+                <button class="main_btn gene_csv" type="button" onclick="generateCSV()">CSV出力</button>
+            
+        </form>
+    </div>
 
     <script>
+        function validateSku(input) {
+            var pattern = /^[A-Za-z0-9]{13}$/; // 13桁の半角英数字
+            var isValid = pattern.test(input.value);
+
+            var errorDiv = document.getElementById('skuValidationError');
+
+            if (isValid) {
+                errorDiv.textContent = ''; // Clear the error message
+            } else {
+                errorDiv.textContent = '※13桁の半角英数字を入力してください';
+            }
+        }
+
         function addRow() {
             // Create a new div element
             var newRow = document.createElement("div");
@@ -62,7 +183,8 @@
             newRow.innerHTML = `
                 <div class="form_box">
                     <label for="sku"></label>
-                    <input type="text" class="sku" required><br>
+                    <input type="text" class="sku" placeholder="" required oninput="validateSku(this)"><br>
+                    <div id="skuValidationError" style="color: red;"></div>
                 </div>
                 
                 <div class="form_box">   
@@ -81,14 +203,24 @@
                 </div>
             `;
 
-            // Insert the new row after the last input-row
+            var deleteButton = document.createElement("button");
+            deleteButton.classList.add("delete-row-button");
+            deleteButton.textContent = "削除";
+            deleteButton.addEventListener("click", function () {
+                deleteRow(newRow);
+            });
+            newRow.appendChild(deleteButton);
+
             var lastInputRow = document.querySelector("#priceForm .input-row:last-child");
             if (lastInputRow) {
                 lastInputRow.parentNode.insertBefore(newRow, lastInputRow.nextSibling);
             } else {
-                // If there is no last input-row, insert it before the buttons
                 document.getElementById("priceForm").insertBefore(newRow, document.getElementById("priceForm").lastElementChild.previousElementSibling);
             }
+        }
+
+        function deleteRow(row) {
+            row.parentNode.removeChild(row);
         }
 
         function generateCSV() {
@@ -110,16 +242,23 @@
                 // Append values to CSV content
                 csvContent += `${sku},${cost},${cost},${sellingPrice},${sellingPrice},${dateStringWithoutHyphens}\n`;
             });
-        
+
+            // 現在の日時を取得
+            var now = new Date();
+            var timestamp = now.toISOString().replace(/[^0-9]/g, '');
+
+            // ファイル名に日時を組み込んで保存
+            var fileName = "商品単価マスタ_" + timestamp + ".csv";
+            
             // Create a data URI and trigger a download
             var encodedUri = encodeURI(csvContent);
             var link = document.createElement("a");
             link.setAttribute("href", encodedUri);
-            link.setAttribute("download", "price_data.csv");
+            link.setAttribute("download", fileName);
             document.body.appendChild(link);
             link.click();
-        }       
 
+        }
 
     </script>
 </body>
