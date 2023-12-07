@@ -226,7 +226,7 @@
         function generateCSV() {
             // Collect values from existing and dynamically created input fields
             var rows = document.querySelectorAll("#priceForm .input-row");
-            var csvContent = "data:text/csv;charset=utf-8,商品,原価単価,税抜購買単価,税抜上代単価,税抜販売単価,適用開始日,商品名,税込購買単価,税込上代単価,税込販売単価\n";
+            var csvContent = "\uFEFF商品,原価単価,税抜購買単価,税抜上代単価,税抜販売単価,適用開始日,商品名,税込購買単価,税込上代単価,税込販売単価\n";
 
             rows.forEach(function (row) {
                 var sku = row.querySelector(".sku").value;
@@ -242,22 +242,21 @@
                 // Append values to CSV content
                 csvContent += `${sku},${cost},${cost},${sellingPrice},${sellingPrice},${dateStringWithoutHyphens}\n`;
             });
-
+        
             // 現在の日時を取得
             var now = new Date();
             var timestamp = now.toISOString().replace(/[^0-9]/g, '');
-
+        
             // ファイル名に日時を組み込んで保存
             var fileName = "商品単価マスタ_" + timestamp + ".csv";
-            
+        
             // Create a data URI and trigger a download
-            var encodedUri = "\ufeff" + "data:text/csv;charset=utf-8," + encodeURIComponent(csvContent);
+            var encodedUri = encodeURI(csvContent);
             var link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("download", "price_data.csv");
+            link.setAttribute("href", "data:text/csv;charset=utf-8," + encodedUri);
+            link.setAttribute("download", fileName);
             document.body.appendChild(link);
             link.click();
-
         }
 
     </script>
