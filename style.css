@@ -1,5 +1,15 @@
-*{
-    color: #333333;
+h1{
+    margin: 0 0 -15px;
+}
+
+h4{
+    margin: 0;
+}
+
+ul{
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
 body {
@@ -11,11 +21,106 @@ body {
     "BIZ UDPGothic",
     Meiryo,
     sans-serif;
+    color: #333333;
+}
+
+header{
+    height: 60px;
+    background: rgba(0,0,0,0.8);
+    width: 100vw;
+    width: auto;
+    margin: 0; 
+}
+
+.header_wrapper{
+    width: 1000px;
+    max-width: 100%;
+    padding: 10px;
+    margin: 0 auto;
+    
+}
+
+.logo_main{
+    width: 200px;
+    float: left;
+}
+
+.header_right{
+    float: right;
+}
+
+.header_right ul{
+    display: flex;
+    justify-content: flex-end;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    padding-right: 10px;
+}
+
+.header_right li{
+    margin: 5px 0;
+    padding-left: 10px;
+}
+
+.header_right li:not(:last-child){
+    border-right: 1px solid #fff;
+    padding-right: 10px;
+}
+
+.header_right a{
+    display: inline-block;
+    text-decoration: none;
+    color: #fff;
+}
+
+.unfinished{
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+
+main{
     width: 1000px;
     max-width: 100%;
     margin: 0 auto;
     padding: 20px;
+    height: auto;
+    min-height: 1000px;
 }
+
+.exp_wrapper li{
+    padding: 5px 0;
+}
+
+.attention{
+    width: 500px;
+    background: #f6f6f6;
+    padding: 10px;
+}
+
+.attention span{
+    color: #ff6666;
+    font-weight: bold;
+}
+
+.instruction{
+    width: 500px;
+    background: #f6f6f6;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.instruction span{
+    color: #00d026;
+    font-weight: bold;
+}
+
+.instruction ol{
+    padding: 0 0 0 20px;
+    margin: 0;
+}
+
 
 .form_area{
     width: 1000px;
@@ -40,6 +145,7 @@ body {
     margin-bottom: 0;
     letter-spacing: 5px;
 }
+
 input{
     width: 200px;
     max-width: 100%;
@@ -48,11 +154,17 @@ input{
     height: 20px;
     font-size: 1rem;
 }
-#skuValidationError{
+
+input:hover{
+    cursor: cell;
+}
+
+.error-message, .error-message2{
     font-size: 0.7rem;
     color: #ff6666;
     display: float;
 }
+
 .main_btn{
     border: none;
     border-radius: none;
@@ -98,4 +210,20 @@ input{
 .delete-row-button:active{
     position: relative;
     top: 5px;
+}
+
+#inputRowsContainer .input-row:first-child .delete-row-button {
+    display: none;
+}
+
+footer{
+    width: 100%;
+    margin: 0;
+    padding: 10px;
+    text-align: center;
+}
+
+.footer_logo{
+    width: 100px;
+    margin: 15px auto 0;
 }
