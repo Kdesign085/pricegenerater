@@ -89,26 +89,50 @@ main{
     min-height: 1000px;
 }
 
-.exp_wrapper li{
-    padding: 5px 0;
+.main_left{
+    float: left;
 }
 
-.attention{
-    width: 500px;
-    background: #f6f6f6;
+.main_right{
+    float: right;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.exp_title{
+    position: relative;
+    padding: 5px 10px;
+    margin-left: 10px;
+    background: #d6d6d6;
+}
+
+.exp_content{
+    position: absolute;
+    top: 140px;
+    right: 100px;
+    display: none;
+    background: #333333;
+    color: #fff;
     padding: 10px;
+}
+
+.exp_title:hover{
+    background: #333333;
+    color: #fff;
+    cursor: help;
+}
+
+.exp_title:hover + .exp_content{
+    display: block;
+}
+
+.exp_content li{
+    padding: 5px 0;
 }
 
 .attention span{
     color: #ff6666;
     font-weight: bold;
-}
-
-.instruction{
-    width: 500px;
-    background: #f6f6f6;
-    padding: 10px;
-    margin-bottom: 10px;
 }
 
 .instruction span{
