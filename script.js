@@ -1,11 +1,27 @@
 function validateSku(input) {
     var pattern = /^[A-Za-z0-9]{13}$/; // 13桁の半角英数字
     var isValid = pattern.test(input.value);
-    var errorDiv = document.getElementById('skuValidationError');
+
+    var errorDiv = input.parentElement.querySelector('.error-message');
+
     if (isValid) {
         errorDiv.textContent = ''; // Clear the error message
     } else {
         errorDiv.textContent = '※13桁の半角英数字を入力してください';
+    }
+}
+
+function validateNumber(input) {
+    var pattern = /^\d*$/; // 数字のみ
+    var isValid = pattern.test(input.value);
+
+    var errorDiv = input.parentElement.querySelector('.error-message2');
+
+    if (isValid) {
+        errorDiv.textContent = ''; // Clear the error message
+    } else {
+        errorDiv.textContent = '※数字を入力してください';
+        input.value = input.value.replace(/[^\d]/g, ''); // 非数字を削除
     }
 }
 
@@ -17,17 +33,19 @@ function addRow() {
     newRow.innerHTML = `
         <div class="form_box">
             <label for="sku"></label>
-            <input type="text" class="sku" placeholder="" required oninput="validateSku(this)"><br>
-            <div id="skuValidationError" style="color: red;"></div>
+            <input type="text" maxlength="13" class="sku" placeholder="" required oninput="validateSku(this)><br>
+            <div class="error-message"></div>
         </div>
         
         <div class="form_box">   
             <label for="cost"></label>
-            <input type="number" class="cost" required><br>
+            <input type="text" inputmode=”numeric” class="cost" required oninput="validateNumber(this)><br>
+            <div class="error-message2"></div>
         </div>
         <div class="form_box">    
             <label for="sellingPrice"></label>
-            <input type="number" class="sellingPrice" required><br>
+            <input type="text" inputmode=”numeric” class="sellingPrice" required oninput="validateNumber(this)><br>
+            <div class="error-message2"></div>
         </div>
         <div class="form_box">    
             <label for="startDate"></label>
@@ -53,6 +71,12 @@ function deleteRow(row) {
     row.parentNode.removeChild(row);
 
 }
+
+function resetForm() {
+    // ページをリダイレクト
+    window.location.href = window.location.href;
+}
+
 function generateCSV() {
     // Collect values from existing and dynamically created input fields
     var rows = document.querySelectorAll("#priceForm .input-row");
