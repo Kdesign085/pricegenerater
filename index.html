@@ -6,42 +6,88 @@
     <title>商品単価マスタCSV出力</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <h1>商品単価マスタCSV出力</h1>
-    <p>原価変更・販売価格変更を行う場合に使用してください。<br>すべてのフォームに値を入れてください。</p>
 
-        <form id="priceForm">
+<body>
+    <header>
+        <div class="header_wrapper">
+            <div class="logo_main">
+                <a href="index.html"><img src ="img/QuickGrid_logo_w.svg"></a>
+            </div>
+            <div class="header_right">
+                <ul>
+                    <li class="unfinished"><a href="index.html">商品マスタ</a></li>
+                    <li><a href="index.html">商品単価マスタ</a></li>
+                    <li class="unfinished"><a href="index.html">得意先単価マスタ</a></li>
+                    <li class="unfinished"><a href="index.html">組み立て構成マスタ</a></li>
+                </ul>
+            </div>
+            </div>
+    </header>
+    <main>
+    <h1>商品単価マスタCSV出力</h1>
+    <p>原価変更・販売価格変更を行う場合に使用してください。</p>
+    <div class="exp_wrapper">
+        <div class="instruction">
+                <h4>使い方</h4>
+                <ol>
+                    <li>各フォームに必要事項を入力。</li>
+                    <li>日付はカレンダーから選択。</li>
+                    <li>入力が終わったら<span>CSV出力ボタン</span>を押下。</li>
+                    <li>出力されたファイルをそのままSlackで送って完了！</li>
+                </ol>
+        </div>
+        <div class="attention">
+            <h4>注意事項</h4>
+            <ul>
+                <li>入力後エンターキーを押すと行が<span>削除</span>されます。</li>
+                <li>すべてのフォームを入力しないとCSV出力されません。</li>
+            </ul>
+        </div>
+    </div>
+
+    <form id="priceForm">
+        <div id="inputRowsContainer">
             <div class="input-row">
                 <div class="form_box">
                     <p>商品SKU</p>
                     <label for="sku"></label>
                     <input type="text" class="sku" placeholder="" required oninput="validateSku(this)"><br>
-                    <div id="skuValidationError"></div>
+                    <div class="error-message"></div>
                 </div>
 
                 <div class="form_box">
                     <p>原価単価</p>
                     <label for="cost"></label>
-                    <input type="number" class="cost" required><br>
+                    <input type="text" class="cost" required oninput="validateNumberInput(this)"><br>
+                    <div class="error-message2"></div>
                 </div>
 
                 <div class="form_box">
                     <p>販売単価</p>
                     <label for="sellingPrice"></label>
-                    <input type="number" class="sellingPrice" required><br>
+                    <input type="text" class="sellingPrice" required oninput="validateNumberInput(this)"><br>
+                    <div class="error-message2"></div>
                 </div>
 
                 <div class="form_box">
                     <p>適応開始日</p>
                     <label for="startDate"></label>
                     <input type="date" class="startDate" required><br>
+                    <div class="error-message"></div>
                 </div>
+                <button type="button" class="delete-row-button" onclick="deleteRow(this)">行削除</button>
             </div>
-                <button class="main_btn add_row" type="button" onclick="addRow()">行を追加</button>
-                <button class="main_btn gene_csv" type="button" onclick="generateCSV()">CSV出力</button>
-            
-        </form>
-    </div>
+        </div>
+        <button class="main_btn add_row" type="button" onclick="addRow()">行を追加</button>
+        <button class="main_btn gene_csv" type="button" onclick="generateCSV()">CSV出力</button>
+        <button class="main_btn reset" type="button" onclick="resetForm()">リセット</button>
+    </form>
+    </main>
+    <footer>
+        <div class="footer_logo">
+            <a href="index.html"><img src ="img/QuickGrid_logo.svg"></a>
+        </div>
+    </footer>
     <script src="script.js" async></script>
 </body>
 </html>
