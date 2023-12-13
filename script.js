@@ -58,7 +58,7 @@ function addRow() {
     
     var deleteButton = document.createElement("button");
     deleteButton.classList.add("delete-row-button");
-    deleteButton.setAttribute("type", "button");
+    deleteButton.type = "button"; // Add type="button"
     deleteButton.textContent = "削除";
     deleteButton.addEventListener("click", function () {
         deleteRow(newRow);
