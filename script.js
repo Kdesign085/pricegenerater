@@ -51,13 +51,19 @@ function addRow() {
             <label for="startDate"></label>
             <input type="date" class="startDate" required><br>
         </div>
+
     `;
+
+   
+    
     var deleteButton = document.createElement("button");
     deleteButton.classList.add("delete-row-button");
+    deleteButton.setAttribute('type', 'button');
     deleteButton.textContent = "削除";
     deleteButton.addEventListener("click", function () {
         deleteRow(newRow);
     });
+
     newRow.appendChild(deleteButton);
     var lastInputRow = document.querySelector("#priceForm .input-row:last-child");
     if (lastInputRow) {
@@ -102,7 +108,10 @@ function generateCSV() {
         
     // ファイル名に日時を組み込んで保存
     var fileName = "商品単価マスタ_" + timestamp + ".csv";
-        
+    
+    // Add BOM to the beginning of the CSV content
+    csvContent = "\uFEFF" + csvContent;
+
     // Create a data URI and trigger a download
     var encodedUri = encodeURI(csvContent);
     var link = document.createElement("a");
