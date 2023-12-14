@@ -108,10 +108,7 @@ function generateCSV() {
         
     // ファイル名に日時を組み込んで保存
     var fileName = "商品単価マスタ_" + timestamp + ".csv";
-    
-    // Add BOM to the beginning of the CSV content
-    csvContent = "\uFEFF" + csvContent;
-
+        
     // Create a data URI and trigger a download
     var encodedUri = encodeURI(csvContent);
     var link = document.createElement("a");
